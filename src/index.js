@@ -131,23 +131,84 @@ ReactDOM.render(countElement, document.getElementById("component8"));
 class CharacterCount extends React.Component {
   state = {
     message: '',
-    maxCharacter:50
+    maxCharacter: 50
   };
 
   giveMessage(text) {
-    this.setState({ maxCharacter: 50 - text.length});
+    this.setState({ maxCharacter: 50 - text.length });
   }
 
   render() {
     return <span>
       <p>{this.state.maxCharacter} character are remaining</p>
       <label>Message : </label><input type="text" onChange={e => this.giveMessage(e.target.value)}></input>
+      <br />
     </span>
   }
 }
 
 const messageELE = <CharacterCount></CharacterCount>
-ReactDOM.render(messageELE,document.getElementById("component9"));
+ReactDOM.render(messageELE, document.getElementById("component9"));
+
+//component 10
+//transfer data parent to child and vice versa
+
+class Employee extends React.Component {
+  render() {
+    return <span>
+      <h1>Employee Details</h1>
+      <p>
+        <label>Employee name : <b>{this.props.name}</b></label>
+      </p>
+      <p>
+        <label>Employee Desigination : <b>{this.props.desigination}</b></label>
+      </p>
+      <p>
+        <label>Employee Department : <b>{this.props.department}</b></label>
+      </p>
+      <p>
+        <label>Employee Salary : <b>{this.props.salary} pm</b></label>
+      </p>
+      <EmployeeSalaryBreakups basic={this.props.basic} hra={this.props.hra} gratuity={this.props.gratuity}></EmployeeSalaryBreakups>
+    </span>;
+  }
+}
+
+class EmployeeSalaryBreakups extends React.Component {
+  constructor(props) {
+    super(props);
+    this.base = React.createRef();
+    this.state = {
+      basic: this.props.basic,
+      hra: this.props.hra,
+      gratuity: this.props.gratuity
+    };
+  }
+
+  updateSalary = () => {
+    //let salary=parseInt(this.refs.basic);
+    alert("Salary is " + this.base.value);
+  }
+
+  render() {
+    return <span>
+      <h1>Employee Salary Details</h1>
+      <p>
+        <label>Basic Salary : <input type="text" ref="base" defaultValue={this.props.basic}></input></label>
+      </p>
+      <p>
+        <label>HRA : <input type="text" ref="ha" defaultValue={this.props.hra}></input></label>
+      </p>
+      <p>
+        <label>Gratuity : <input type="text" ref="grat" defaultValue={this.props.gratuity}></input></label>
+      </p>
+      <button onClick={this.updateSalary}>Update</button>
+    </span>;
+  }
+}
+
+const employeeElement = <Employee name="Harish" desigination="Software Engineer" department="IT" salary="29000" basic="24550" hra="2000" gratuity="2450"></Employee>
+ReactDOM.render(employeeElement, document.getElementById("component10"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
